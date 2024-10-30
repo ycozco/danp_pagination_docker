@@ -1,0 +1,46 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.5'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.unsa'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Starter para aplicaciones web (incluye Spring MVC y Tomcat)
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	// Starter para interactuar con bases de datos mediante JPA/Hibernate
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	
+	// Driver para PostgreSQL
+	implementation 'org.postgresql:postgresql'
+
+	// Starter de seguridad para manejo de HTTPS y certificados
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// Para monitorear y administrar el servicio (actuador)
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	// Herramientas de desarrollo (recarga automática)
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Dependencias para pruebas
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
