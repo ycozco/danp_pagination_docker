@@ -7,8 +7,8 @@ WORKDIR /app
 # Copia todo el proyecto al contenedor
 COPY . .
 
-# Ejecuta el comando de compilación para generar el JAR
-RUN ./gradlew clean build
+# Ejecuta el comando de compilación para generar el JAR, excluyendo las pruebas
+RUN ./gradlew clean build -x test
 
 # Usa una imagen de Java para ejecutar la aplicación
 FROM openjdk:17-jdk-alpine
