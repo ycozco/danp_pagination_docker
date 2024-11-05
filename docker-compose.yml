@@ -2,28 +2,28 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:17-alpine  # Actualizado a la versión 17
+    image: postgres:17-alpine  # Usando PostgreSQL versión 17
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: paintings_db
     ports:
-      - "5432:5432"  # Opcional, solo si necesitas acceder desde el host
+      - "5432:5432"  # Exponer el puerto PostgreSQL (opcional)
     volumes:
       - db_data:/var/lib/postgresql/data
 
   api:
     build: .
     ports:
-      - "8080:8080"   # Si usas este puerto
-      - "8443:8443"   # Agrega este si usas HTTPS
+      - "8080:8080"   # Puerto HTTP
+      - "8443:8443"   # Puerto HTTPS
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/paintings_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
     depends_on:
       - db
-    restart: unless-stopped  # Para reiniciar en caso de fallos
+    restart: unless-stopped  # Reiniciar en caso de fallo
 
 volumes:
   db_data:
