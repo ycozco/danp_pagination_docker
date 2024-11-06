@@ -19,7 +19,7 @@ WORKDIR /app
 # Copia el JAR generado en la imagen final
 COPY --from=build /app/build/libs/api-docker-0.0.1-SNAPSHOT.jar app.jar
 
-# Expone los puertos 8080 y 8443 para la API
+# Expone los puertos para pruebas locales
 EXPOSE 8080 8443
 
 # Ejecuta la aplicación

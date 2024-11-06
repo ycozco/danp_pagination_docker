@@ -8,19 +8,20 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: paintings_db
     ports:
-      - "5432:5432"
+      - "5432:5432"  # Exponer PostgreSQL localmente
     volumes:
       - db_data:/var/lib/postgresql/data
 
   api:
     build: .
     ports:
-      - "8080:8080"
-      - "8443:8443"
+      - "8080:8080"   # Puerto HTTP para pruebas locales
+      - "8443:8443"   # Puerto HTTPS para pruebas locales
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/paintings_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin
+      PORT: 8080  # Para que tome este puerto en entorno local
     depends_on:
       - db
     restart: unless-stopped
