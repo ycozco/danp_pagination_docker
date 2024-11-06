@@ -1,30 +1,23 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:17-alpine
+  postgres_container:
+    image: postgres:14
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: paintings_db
+      POSTGRES_DB: my_database
+      POSTGRES_USER: my_user
+      POSTGRES_PASSWORD: my_password
     ports:
       - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
 
-  api:
+  api-docker:
     build: .
-    ports:
-      - "8080:8080"
-      - "8443:8443"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/paintings_db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: admin
-      PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_container:5432/my_database
+      SPRING_DATASOURCE_USERNAME: my_user
+      SPRING_DATASOURCE_PASSWORD: my_password
+      PORT: 8443
+    ports:
+      - "8443:8443"
     depends_on:
-      - db
-    restart: unless-stopped
-
-volumes:
-  db_data:
+      - postgres_container
