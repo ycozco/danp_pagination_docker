@@ -9,6 +9,11 @@ services:
       POSTGRES_PASSWORD: my_password
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U my_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   api-docker:
     build: .
@@ -20,4 +25,5 @@ services:
     ports:
       - "8443:8443"
     depends_on:
-      - postgres_container
+      postgres_container:
+        condition: service_healthy
