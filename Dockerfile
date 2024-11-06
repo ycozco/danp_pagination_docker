@@ -7,10 +7,10 @@ WORKDIR /app
 # Copia todo el proyecto al contenedor
 COPY . .
 
-# Ejecuta el comando de compilación para generar el JAR, excluyendo las pruebas
+# Ejecuta el comando de compilacion para generar el JAR, excluyendo las pruebas
 RUN ./gradlew clean build -x test
 
-# Usa una imagen de Java para ejecutar la aplicación
+# Usa una imagen de Java para ejecutar la aplicacion
 FROM openjdk:17-jdk-alpine
 
 # Establece el directorio de trabajo dentro del contenedor
@@ -22,5 +22,5 @@ COPY --from=build /app/build/libs/api-docker-0.0.1-SNAPSHOT.jar app.jar
 # Expone los puertos para pruebas locales
 EXPOSE 8080 8443
 
-# Ejecuta la aplicación
+# Ejecuta la aplicacion
 ENTRYPOINT ["java", "-jar", "app.jar"]
