@@ -1,10 +1,11 @@
 package com.unsa.api_docker.repository;
 
 import com.unsa.api_docker.model.Painting;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface PaintingRepository extends JpaRepository<Painting, Long> {
-    // Si tienes métodos personalizados, puedes agregarlos aquí.
+    // Método para buscar pinturas por 'room' con paginación
+    Page<Painting> findByRoom(Integer room, Pageable pageable);
 }

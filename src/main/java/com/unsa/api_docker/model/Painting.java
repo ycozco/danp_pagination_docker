@@ -1,9 +1,7 @@
 package com.unsa.api_docker.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Painting {
@@ -11,13 +9,14 @@ public class Painting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String painting;
     private String artist;
-    private int yearOfPainting;
+    private Integer yearOfPainting;
     private String adjustedPrice;
     private String originalPrice;
     private String dateOfSale;
-    private int yearOfSale;
+    private Integer yearOfSale;
     private String seller;
     private String buyer;
     private String auctionHouse;
@@ -25,6 +24,10 @@ public class Painting {
     private String paintingWikipediaProfile;
     private String artistWikipediaProfile;
     private String description;
+
+    // Nuevo campo 'room'
+    @NotNull
+    private Integer room = 0; // Valor por defecto 0
 
     // Getters y Setters
 
@@ -37,7 +40,7 @@ public class Painting {
     }
 
     public String getPainting() {
-        return painting;
+        return painting != null ? painting : "";
     }
 
     public void setPainting(String painting) {
@@ -45,23 +48,23 @@ public class Painting {
     }
 
     public String getArtist() {
-        return artist;
+        return artist != null ? artist : "";
     }
 
     public void setArtist(String artist) {
         this.artist = artist;
     }
 
-    public int getYearOfPainting() {
-        return yearOfPainting;
+    public Integer getYearOfPainting() {
+        return yearOfPainting != null ? yearOfPainting : 0;
     }
 
-    public void setYearOfPainting(int yearOfPainting) {
+    public void setYearOfPainting(Integer yearOfPainting) {
         this.yearOfPainting = yearOfPainting;
     }
 
     public String getAdjustedPrice() {
-        return adjustedPrice;
+        return adjustedPrice != null ? adjustedPrice : "";
     }
 
     public void setAdjustedPrice(String adjustedPrice) {
@@ -69,7 +72,7 @@ public class Painting {
     }
 
     public String getOriginalPrice() {
-        return originalPrice;
+        return originalPrice != null ? originalPrice : "";
     }
 
     public void setOriginalPrice(String originalPrice) {
@@ -77,23 +80,23 @@ public class Painting {
     }
 
     public String getDateOfSale() {
-        return dateOfSale;
+        return dateOfSale != null ? dateOfSale : "";
     }
 
     public void setDateOfSale(String dateOfSale) {
         this.dateOfSale = dateOfSale;
     }
 
-    public int getYearOfSale() {
-        return yearOfSale;
+    public Integer getYearOfSale() {
+        return yearOfSale != null ? yearOfSale : 0;
     }
 
-    public void setYearOfSale(int yearOfSale) {
+    public void setYearOfSale(Integer yearOfSale) {
         this.yearOfSale = yearOfSale;
     }
 
     public String getSeller() {
-        return seller;
+        return seller != null ? seller : "";
     }
 
     public void setSeller(String seller) {
@@ -101,7 +104,7 @@ public class Painting {
     }
 
     public String getBuyer() {
-        return buyer;
+        return buyer != null ? buyer : "";
     }
 
     public void setBuyer(String buyer) {
@@ -109,7 +112,7 @@ public class Painting {
     }
 
     public String getAuctionHouse() {
-        return auctionHouse;
+        return auctionHouse != null ? auctionHouse : "";
     }
 
     public void setAuctionHouse(String auctionHouse) {
@@ -117,7 +120,7 @@ public class Painting {
     }
 
     public String getImage() {
-        return image;
+        return image != null ? image : "";
     }
 
     public void setImage(String image) {
@@ -125,7 +128,7 @@ public class Painting {
     }
 
     public String getPaintingWikipediaProfile() {
-        return paintingWikipediaProfile;
+        return paintingWikipediaProfile != null ? paintingWikipediaProfile : "";
     }
 
     public void setPaintingWikipediaProfile(String paintingWikipediaProfile) {
@@ -133,7 +136,7 @@ public class Painting {
     }
 
     public String getArtistWikipediaProfile() {
-        return artistWikipediaProfile;
+        return artistWikipediaProfile != null ? artistWikipediaProfile : "";
     }
 
     public void setArtistWikipediaProfile(String artistWikipediaProfile) {
@@ -141,10 +144,18 @@ public class Painting {
     }
 
     public String getDescription() {
-        return description;
+        return description != null ? description : "";
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getRoom() {
+        return room != null ? room : 0;
+    }
+
+    public void setRoom(Integer room) {
+        this.room = room;
     }
 }

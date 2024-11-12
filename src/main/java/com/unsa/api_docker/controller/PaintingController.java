@@ -4,14 +4,12 @@ import com.unsa.api_docker.dto.PaginationResponse;
 import com.unsa.api_docker.model.Painting;
 import com.unsa.api_docker.repository.PaintingRepository;
 
-import jakarta.servlet.http.HttpServletRequest; // Import necesario para HttpServletRequest
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Enumeration;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/paintings")
@@ -21,42 +19,22 @@ public class PaintingController {
     private PaintingRepository paintingRepository;
 
     @GetMapping
-    public PaginationResponse<Painting> getAllPaintings(HttpServletRequest request) {
+    public PaginationResponse<Painting> getAllPaintings(
+            @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size,
+            @RequestParam Optional<Integer> room) {
 
-        // Imprimir todos los parámetros recibidos
-        Enumeration<String> parameterNames = request.getParameterNames();
-        System.out.println("Parámetros recibidos:");
-        while (parameterNames.hasMoreElements()) {
-            String paramName = parameterNames.nextElement();
-            String paramValue = request.getParameter(paramName);
-            System.out.println(paramName + " = " + paramValue);
+        int pageNumber = page.orElse(0);
+        int pageSize = size.orElse(10);
+
+        Pageable paging = PageRequest.of(pageNumber, pageSize);
+        Page<Painting> pageResult;
+
+        if (room.isPresent() && room.get() != 0) {
+            pageResult = paintingRepository.findByRoom(room.get(), paging);
+        } else {
+            pageResult = paintingRepository.findAll(paging);
         }
-
-        // Obtener los parámetros 'page' y 'size'
-        String pageParam = request.getParameter("page");
-        String sizeParam = request.getParameter("size");
-
-        // Establecer valores por defecto si los parámetros no están presentes
-        int page = 0; // página por defecto
-        int size = 10; // tamaño por defecto
-
-        try {
-            if (pageParam != null) {
-                page = Integer.parseInt(pageParam);
-            }
-            if (sizeParam != null) {
-                size = Integer.parseInt(sizeParam);
-            }
-        } catch (NumberFormatException e) {
-            // Manejar valores inválidos de parámetros
-            throw new IllegalArgumentException("Parámetros 'page' o 'size' inválidos");
-        }
-
-        System.out.println("Valor final de 'page': " + page);
-        System.out.println("Valor final de 'size': " + size);
-
-        Pageable paging = PageRequest.of(page, size);
-        Page<Painting> pageResult = paintingRepository.findAll(paging);
 
         PaginationResponse<Painting> response = new PaginationResponse<>();
         response.setContent(pageResult.getContent());
@@ -70,7 +48,7 @@ public class PaintingController {
     }
 
     @PostMapping
-    public Painting createPainting(@RequestBody Painting painting) {
+    public Painting createPainting(@Valid @RequestBody Painting painting) {
         return paintingRepository.save(painting);
     }
 
@@ -81,7 +59,7 @@ public class PaintingController {
     }
 
     @PutMapping("/{id}")
-    public Painting updatePainting(@PathVariable Long id, @RequestBody Painting paintingDetails) {
+    public Painting updatePainting(@PathVariable Long id, @Valid @RequestBody Painting paintingDetails) {
         Painting painting = paintingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Painting not found"));
 
@@ -100,6 +78,7 @@ public class PaintingController {
         painting.setPaintingWikipediaProfile(paintingDetails.getPaintingWikipediaProfile());
         painting.setArtistWikipediaProfile(paintingDetails.getArtistWikipediaProfile());
         painting.setDescription(paintingDetails.getDescription());
+        painting.setRoom(paintingDetails.getRoom());
 
         return paintingRepository.save(painting);
     }
