@@ -1,4 +1,4 @@
-package com.unsa.api_docker.config; // Ajusta el paquete según tu estructura
+package com.unsa.api_docker.config; 
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
